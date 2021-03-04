@@ -7,6 +7,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 10px;
+  flex:1;
+  margin: 10px;
 
   header{
     flex:1;
