@@ -22,6 +22,7 @@ export default function MoneyCount(){
             state[curCoin] = newValue;
         }
         setMoney({...state})
+        setInputValue(0);
     }
     function handleChange(event) {
         setInputValue(event.target.value);
@@ -32,38 +33,26 @@ export default function MoneyCount(){
                 <h1>Dinheiro</h1>
             </div>
             <div className="content">
-                {/* <div className="left"> */}
                     <div className="cards">
-                        <div className="card">
-                            <p>PL: <span>{money.pl}</span></p>
-                            <button type="button" onClick={()=>setCurCoin('pl')}><FiEdit3 size="16"/></button>
-                        </div>
-                        <div className="card">
-                            <p>PO: <span>{money.po}</span></p>
-                            <button type="button" onClick={()=>setCurCoin('po')}><FiEdit3 size="16"/></button>
-                        </div>
-                        <div className="card">
-                            <p>PE: <span>{money.pe}</span></p>
-                            <button type="button" onClick={()=>setCurCoin('pe')}><FiEdit3 size="16"/></button>
-                        </div>
-                        <div className="card">
-                            <p>PP: <span>{money.pp}</span></p>
-                            <button type="button" onClick={()=>setCurCoin('pp')}><FiEdit3 size="16"/></button>
-                        </div>
-                        <div className="card">
-                            <p>PC: <span>{money.pc}</span></p>
-                            <button type="button" onClick={()=>setCurCoin('pc')}><FiEdit3 size="16"/></button>
-                        </div>
-                    {/* </div> */}
+                    <span className="titleCard">Seu dinheiro</span>
+                        {Object.keys(money).map((coin)=>{
+                            return(
+                            <div className={`card  ${curCoin === coin ? 'coinSelected' : ''} `}>
+                                <p>{coin.toLocaleUpperCase()}: <strong>{money[coin]}</strong></p>
+                                <button type="button" onClick={()=>setCurCoin(coin)}><FiEdit3 size="16"/></button>
+                            </div>
+                            )
+                        })}
                 </div>
                 <div className="right">
+                    <span className="titleCard">Modificar dinheiro</span>
                     <div className="buttons">
-                        <button type="button" onClick={()=>handleChangeCount(-100)}>-100  {curCoin.toLocaleUpperCase()} </button>
-                        <button type="button" onClick={()=>handleChangeCount(-10)}>-10  {curCoin.toLocaleUpperCase()} </button>
-                        <button type="button" onClick={()=>handleChangeCount(-1)}>-1 {curCoin.toLocaleUpperCase()} </button>
-                        <button type="button" onClick={()=>handleChangeCount(1)}>+1 {curCoin.toLocaleUpperCase()} </button>
-                        <button type="button" onClick={()=>handleChangeCount(10)}>+10 {curCoin.toLocaleUpperCase()} </button>
-                        <button type="button" onClick={()=>handleChangeCount(100)}>+100 {curCoin.toLocaleUpperCase()} </button>
+                        <button type="button" onClick={()=>handleChangeCount(-100)}>-100 </button>
+                        <button type="button" onClick={()=>handleChangeCount(-10)}>-10 </button>
+                        <button type="button" onClick={()=>handleChangeCount(-1)}>-1</button>
+                        <button type="button" onClick={()=>handleChangeCount(1)}>+1</button>
+                        <button type="button" onClick={()=>handleChangeCount(10)}>+10</button>
+                        <button type="button" onClick={()=>handleChangeCount(100)}>+100</button>
                     </div>
                     <div className="input">
                         <input 
@@ -73,7 +62,7 @@ export default function MoneyCount(){
                             type="button" 
                             onClick={()=>handleChangeCount(inputValue)}>
                                 <FiPlus size="18"/>
-                            </button>
+                        </button>
                     </div>
                 </div>
             </div>
