@@ -34,7 +34,14 @@ export const Container = styled.div`
     justify-content:center;
     align-items: center;
     flex-direction: column;
-    margin-right: 10px;
+    margin: 0 10px 10px 0;
+    border: 1px solid #000;
+    border-radius: 5px;
+    position: relative;
+    padding-top: 8px;
+  }
+  .coinSelected{
+    background: rgba(200,200,0,0.7);
   }
   p{
     text-align: center;
@@ -45,12 +52,12 @@ export const Container = styled.div`
     margin-bottom: 5px;
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
+    justify-content:space-around;
     align-items: center;
-    border: 1px solid #000;
-    border-radius: 5px;
     padding: 0 10px;
     min-width: 80px;
+    border-radius: 4px;
+    min-width: 5rem;
   }
   .card button{
     /* flex:1; */
@@ -80,21 +87,30 @@ export const Container = styled.div`
   .right{
     display: flex;
     flex-direction: column;
-    padding: 5px;
+    padding: 7px;
     flex:1;
     border: 1px solid #000;
     border-radius: 4px;
+    position: relative;
+  }
+  span.titleCard{
+    position: absolute;
+    top: -10px;
+    background: ${props => props.theme.colors.background.secondary};
+    padding: 1px 5px;
   }
   .input{
     display:flex;
-    align-items: center;
     justify-content: center;
 
   }
   .input button{
     font-size: 0px;
+    margin:0 0 0 5px;
   }
   .input input{
-    height: 1.5rem;
+    width: 3rem;
+    text-align: right;
+    border-radius: 4px;
   }
 `;
