@@ -1,5 +1,6 @@
 import { Container } from "@/styles/components/MoneyCount";
 import { useState } from "react"
+import {FiEdit3, FiPlus} from 'react-icons/fi';
 
 export default function MoneyCount(){
     const [money,setMoney] = useState({ pl:0, po:0, pe:0, pp:0,pc:0});
@@ -28,31 +29,30 @@ export default function MoneyCount(){
     return(
         <Container>
             <div className="header">
-                <h1>Money count</h1>
-                <p>{curCoin}</p>
+                <h1>Dinheiro</h1>
             </div>
             <div className="content">
                 {/* <div className="left"> */}
                     <div className="cards">
                         <div className="card">
-                            <p>PL: {money.pl}</p>
-                            <button type="button" onClick={()=>setCurCoin('pl')}>Mudar Moeda</button>
+                            <p>PL: <span>{money.pl}</span></p>
+                            <button type="button" onClick={()=>setCurCoin('pl')}><FiEdit3 size="16"/></button>
                         </div>
                         <div className="card">
-                            <p>PO: {money.po}</p>
-                            <button type="button" onClick={()=>setCurCoin('po')}>Mudar Moeda</button>
+                            <p>PO: <span>{money.po}</span></p>
+                            <button type="button" onClick={()=>setCurCoin('po')}><FiEdit3 size="16"/></button>
                         </div>
                         <div className="card">
-                            <p>PE: {money.pe}</p>
-                            <button type="button" onClick={()=>setCurCoin('pe')}>Mudar Moeda</button>
+                            <p>PE: <span>{money.pe}</span></p>
+                            <button type="button" onClick={()=>setCurCoin('pe')}><FiEdit3 size="16"/></button>
                         </div>
                         <div className="card">
-                            <p>PP: {money.pp}</p>
-                            <button type="button" onClick={()=>setCurCoin('pp')}>Mudar Moeda</button>
+                            <p>PP: <span>{money.pp}</span></p>
+                            <button type="button" onClick={()=>setCurCoin('pp')}><FiEdit3 size="16"/></button>
                         </div>
                         <div className="card">
-                            <p>PC: {money.pc}</p>
-                            <button type="button" onClick={()=>setCurCoin('pc')}>Mudar Moeda</button>
+                            <p>PC: <span>{money.pc}</span></p>
+                            <button type="button" onClick={()=>setCurCoin('pc')}><FiEdit3 size="16"/></button>
                         </div>
                     {/* </div> */}
                 </div>
@@ -66,8 +66,14 @@ export default function MoneyCount(){
                         <button type="button" onClick={()=>handleChangeCount(100)}>+100 {curCoin.toLocaleUpperCase()} </button>
                     </div>
                     <div className="input">
-                        <input type="number" value={inputValue} onChange={handleChange}/>
-                        <button type="button" onClick={()=>handleChangeCount(inputValue)}>Adicionar {curCoin.toLocaleUpperCase()} </button>
+                        <input 
+                            type="number" 
+                            value={inputValue} onChange={handleChange}/>
+                        <button 
+                            type="button" 
+                            onClick={()=>handleChangeCount(inputValue)}>
+                                <FiPlus size="18"/>
+                            </button>
                     </div>
                 </div>
             </div>

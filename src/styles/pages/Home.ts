@@ -6,15 +6,17 @@ export const Container = styled.div`
     align-items: center;
     flex-direction: column;
     h1{
-        padding: 2rem;
+        padding: 3rem;
+        color:#ff4545;
+        font-family: Roboto, sans-serif;
     }
     
 `;
 
 export const Content = styled.div`
     display: flex;
+    flex:1;
     justify-content: center;
     align-items: flex-start;
-    flex:1;
     flex-wrap: wrap;
 `;

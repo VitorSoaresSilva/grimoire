@@ -10,13 +10,20 @@ export const Container = styled.div`
   flex:1;
   margin: 10px;
 
-  header{
+  .header{
     flex:1;
     justify-content:center;
     display:flex;
     align-items: center;
     color: ${props => props.theme.colors.text.secondary};
     font-size: 1.5rem;
+  }
+  .header h1{
+    /* font-family: Roboto, sans-serif; */
+    /* color: #fff; */
+    font-size: 2rem;
+    padding: 5px;
+
   }
   .content{
     flex:1;

@@ -11,13 +11,23 @@ export default function ArrowCount(){
     }
     return(
         <Container>
-            <header>Flechas</header>
+            <div className="header">
+                    <h1>Flechas</h1>
+                </div>
             <div className="content">
                 <p>{count}</p>
             </div>
             <Buttons>
-                <button type="button" onClick={()=>{handleChangeCount(-1)}}>Remove</button>
-                <button type="button" onClick={()=>{handleChangeCount(1)}}>Add</button>
+                <button 
+                    type="button" 
+                    onClick={()=>{handleChangeCount(-1)}}>
+                        Remove
+                </button>
+                <button 
+                    type="button" 
+                    onClick={()=>{handleChangeCount(1)}}>
+                    Add
+                </button>
             </Buttons>
         </Container>
     )
