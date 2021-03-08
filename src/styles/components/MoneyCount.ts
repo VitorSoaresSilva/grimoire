@@ -33,7 +33,7 @@ export const Container = styled.div`
     display: flex;
     justify-content:center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column-reverse;
     margin: 0 10px 10px 0;
     border: 1px solid #000;
     border-radius: 5px;
