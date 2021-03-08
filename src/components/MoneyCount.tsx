@@ -7,6 +7,7 @@ export default function MoneyCount(){
     const [curCoin, setCurCoin] = useState('po');
     const [inputValue,setInputValue] = useState(0)
 
+    const buttonsToChangeValue = [-100,-10,-1,1,10,100];
     let pl = 0 ; //Math.floor(money / 1000);
     let po = 0 ; //Math.floor((money % 1000) / 100);
     let pe = 0 ; //Math.floor((money % 100)/5)
@@ -47,12 +48,11 @@ export default function MoneyCount(){
                 <div className="right">
                     <span className="titleCard">Modificar dinheiro</span>
                     <div className="buttons">
-                        <button type="button" onClick={()=>handleChangeCount(-100)}>-100 </button>
-                        <button type="button" onClick={()=>handleChangeCount(-10)}>-10 </button>
-                        <button type="button" onClick={()=>handleChangeCount(-1)}>-1</button>
-                        <button type="button" onClick={()=>handleChangeCount(1)}>+1</button>
-                        <button type="button" onClick={()=>handleChangeCount(10)}>+10</button>
-                        <button type="button" onClick={()=>handleChangeCount(100)}>+100</button>
+                        {buttonsToChangeValue.map((value=>{
+                            return(
+                                <button type="button" onClick={()=>handleChangeCount(value)}>{value}</button>
+                            )
+                        }))}
                     </div>
                     <div className="input">
                         <input 
