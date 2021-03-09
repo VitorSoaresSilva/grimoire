@@ -1,20 +1,24 @@
 import { Container } from "@/styles/components/MoneyCount";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {FiEdit3, FiPlus,FiChevronDown,FiChevronUp,FiChevronsDown,FiChevronsUp} from 'react-icons/fi';
+import Cookie from 'js-cookie';
 
-export default function MoneyCount(){
-    const [money,setMoney] = useState([
-        {name: 'PC',value: 0},
-        {name: 'PP',value: 0},
-        {name: 'PE',value: 0},
-        {name: 'PO',value: 0},
-        {name: 'PL',value: 0}
-    ]);
+export default function MoneyCount({initialMoney}){
+    const [money,setMoney] = useState(initialMoney ? JSON.parse(initialMoney): [
+            {name: 'PC',value: 0},
+            {name: 'PP',value: 0},
+            {name: 'PE',value: 0},
+            {name: 'PO',value: 0},
+            {name: 'PL',value: 0}
+        ]
+    )
     const [curCoin, setCurCoin] = useState(0);
     const [inputValue,setInputValue] = useState(0)
     const buttonsToChangeValue = [-100,-10,-1,1,10,100];
     const conversion = [1,10,50,100,1000];
-
+    useEffect(()=>{
+        Cookie.set('money', JSON.stringify(money))
+    },[money])
     function handleChangeCount(value){
         let state = money;
         let newValue = (state[curCoin].value + Number(value));

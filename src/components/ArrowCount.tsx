@@ -1,7 +1,12 @@
 import {Container,Buttons} from "@/styles/components/ArrowCount"
-import { useState } from "react"
-export default function ArrowCount(){
-    const [count,setCount] = useState(0);
+import { useState, useEffect } from "react"
+import Cookie from 'js-cookie'
+
+export default function initialArrowCount ({initialArrowCount}) {
+    const [count,setCount] = useState( initialArrowCount ?? 0);
+    useEffect(()=>{
+        Cookie.set('arrowCount',(count));
+    },[count]);
 
     function handleChangeCount(value){
         const newValue = count + value;
