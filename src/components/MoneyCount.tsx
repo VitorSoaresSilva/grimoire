@@ -1,9 +1,8 @@
 import { Container } from "@/styles/components/MoneyCount";
 import { useState } from "react"
-import {FiEdit3, FiPlus,FiChevronDown,FiChevronUp} from 'react-icons/fi';
+import {FiEdit3, FiPlus,FiChevronDown,FiChevronUp,FiChevronsDown,FiChevronsUp} from 'react-icons/fi';
 
 export default function MoneyCount(){
-    // const [money,setMoney] = useState({ pl:0, po:0, pe:0, pp:0,pc:0});
     const [money,setMoney] = useState([
         {name: 'PC',value: 0},
         {name: 'PP',value: 0},
@@ -13,20 +12,9 @@ export default function MoneyCount(){
     ]);
     const [curCoin, setCurCoin] = useState(0);
     const [inputValue,setInputValue] = useState(0)
-
     const buttonsToChangeValue = [-100,-10,-1,1,10,100];
-
     const conversion = [1,10,50,100,1000];
 
-    // const conversion = []
-    /**
-     * Name
-     * value
-     * index - tabela de conversao
-     */
-
-    //pc pp  pe   po    pl
-    //1 1/10 1/50 1/100 1/1.000
     function handleChangeCount(value){
         let state = money;
         let newValue = (state[curCoin].value + Number(value));
@@ -39,22 +27,26 @@ export default function MoneyCount(){
     function handleChange(event) {
         setInputValue(event.target.value);
     }
-    function tryConvertToUp(index){
-        // receber uma variavel para converter para baixo ou para cima
-        if(index == (money.length - 1)){
-            console.log('cannot convert max');
+    function convertUp(index,convertMaximum = 0){
+        if(index == (money.length - 1) || (money[index].value - conversion[index + 1]) < 0){
             return;
         }
-        if(Math.floor(money[index].value / conversion[index + 1]) > 0){
-            let state = money;
-            state[index].value -= conversion[index + 1];
-            state[index + 1].value += 1;
-            setMoney([...state]);
-        }else{
-            console.log('Cannot convert')
-        }
+        let state = money;
+        let amount = convertMaximum ? Math.floor(money[index].value / conversion[index + 1]) : 1;
+        state[index].value -= amount * conversion[index + 1];
+        state[index + 1].value +=  amount;
+        setMoney([...state]);
     }
-
+    function convertDown(index, convertMaximum = 0){
+        if(index == 0 || money[index].value <= 0){
+            return;
+        }
+        let state = money;
+        let amount = convertMaximum ? state[index].value : 1;
+        state[index].value -= amount;
+        state[index -1].value += amount * conversion[index];
+        setMoney([...state]);
+    }
 
     return(
         <Container>
@@ -69,8 +61,10 @@ export default function MoneyCount(){
                             <div className={`card  ${curCoin === index ? 'coinSelected' : ''} `} key={coin.name}>
                                 <p>{coin.name}: <strong>{coin.value}</strong></p>
                                 <button type="button" onClick={()=>setCurCoin(index)}><FiEdit3 size="16"/></button>
-                                <button type="button" onClick={()=>tryConvertToUp(index)}><FiChevronUp size="16"/></button>
-                                <button type="button" onClick={()=>tryConvertToUp(index)}><FiChevronDown size="16"/></button>
+                                <button type="button" onClick={()=>convertDown(index,1)}><FiChevronsDown size="16"/></button>
+                                <button type="button" onClick={()=>convertDown(index)}><FiChevronDown size="16"/></button>
+                                <button type="button" onClick={()=>convertUp(index)}><FiChevronUp size="16"/></button>
+                                <button type="button" onClick={()=>convertUp(index,1)}><FiChevronsUp size="16"/></button>
                             </div>
                             )
                         })}
