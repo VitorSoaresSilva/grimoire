@@ -17,7 +17,40 @@ export const Container = styled.div`
     align-items: center;
     color: ${props => props.theme.colors.text.secondary};
     font-size: 1.5rem;
+    position: relative;
   }
+  .options{
+    position: absolute;
+    right: 10px;
+    top:2px;
+  }
+  .options button{
+    margin-right:3px;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 0px;
+    background: ${props => props.theme.colors.background.secondary}
+  }
+  .options button:hover{
+    filter: brightness(0.9);
+  }
+  .edit input{
+    width: 3rem;
+    text-align: right;
+    border-radius: 4px;
+    margin-right: 5px;
+  }
+  .edit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex:2;
+  }
+  .edit button{
+    padding: 2px 5px;
+    border-radius: 4px;
+  }
+
   .header h1{
     /* font-family: Roboto, sans-serif; */
     /* color: #fff; */
