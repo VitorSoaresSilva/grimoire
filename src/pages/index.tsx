@@ -2,9 +2,10 @@ import React from "react";
 import ArrowCount from "@/components/ArrowCount";
 import { Container, Content } from "@/styles/pages/Home";
 import MoneyCount from "@/components/MoneyCount";
+import SpellsSlot from "@/components/SpellsSlot";
 import { GetServerSideProps } from "next";
 
-export default function Home({arrowData,moneyData}) {
+export default function Home({arrowData,moneyData,spellsData}) {
   return (
     <Container>
       <h1>Grimoire</h1>
@@ -12,17 +13,19 @@ export default function Home({arrowData,moneyData}) {
       <Content>
         <ArrowCount initialData={arrowData}/>
         <MoneyCount initialData={moneyData}/>
+        <SpellsSlot initialData={spellsData}/>
       </Content>
     </Container>
   )
 }
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { arrowData = false, moneyData = false } = req.cookies;
+  const { arrowData = false, moneyData = false, spellsData = false } = req.cookies;
 
   return {
     props: {
       arrowData: arrowData,
       moneyData: moneyData,
+      spellsData: spellsData,
     }
   }
 };
