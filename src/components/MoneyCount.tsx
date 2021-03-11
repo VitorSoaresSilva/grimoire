@@ -1,23 +1,23 @@
 import { Container } from "@/styles/components/MoneyCount";
 import { useState, useEffect } from "react"
-import {FiEdit3, FiPlus,FiChevronDown,FiChevronUp,FiChevronsDown,FiChevronsUp} from 'react-icons/fi';
+import {FiEdit3, FiPlus,FiChevronDown,FiChevronUp,FiChevronsDown,FiChevronsUp, FiRefreshCcw} from 'react-icons/fi';
 import Cookie from 'js-cookie';
 
-export default function MoneyCount({initialMoney}){
-    const [money,setMoney] = useState(initialMoney ? JSON.parse(initialMoney): [
-            {name: 'PC',value: 0},
-            {name: 'PP',value: 0},
-            {name: 'PE',value: 0},
-            {name: 'PO',value: 0},
-            {name: 'PL',value: 0}
-        ]
-    )
+export default function MoneyCount({initialData}){
+    const baseValue = {money: [
+        {name: 'PC',value: 0},
+        {name: 'PP',value: 0},
+        {name: 'PE',value: 0},
+        {name: 'PO',value: 0},
+        {name: 'PL',value: 0}
+    ],conversion: [1,10,50,100,1000]};
+    const [money,setMoney] = useState(initialData ? JSON.parse(initialData).money: baseValue.money)
+    const [conversion,setConversion] = useState(baseValue.conversion);
     const [curCoin, setCurCoin] = useState(0);
     const [inputValue,setInputValue] = useState(0)
     const buttonsToChangeValue = [-100,-10,-1,1,10,100];
-    const conversion = [1,10,50,100,1000];
     useEffect(()=>{
-        Cookie.set('money', JSON.stringify(money))
+        Cookie.set('moneyData', JSON.stringify({money:money}))
     },[money])
     function handleChangeCount(value){
         let state = money;
@@ -51,11 +51,20 @@ export default function MoneyCount({initialMoney}){
         state[index -1].value += amount * conversion[index];
         setMoney([...state]);
     }
-
+    function reset(){
+        setMoney(baseValue.money);
+        setConversion(baseValue.conversion);
+        setCurCoin(0);
+    }
     return(
         <Container>
             <div className="header">
                 <h1>Dinheiro</h1>
+                <div className="options">
+                    <button onClick={reset}>
+                        <FiRefreshCcw size={18}/>
+                    </button>
+                </div>
             </div>
             <div className="content">
                     <div className="cards">

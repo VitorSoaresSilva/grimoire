@@ -20,6 +20,8 @@ export const Container = styled.div`
     h1{
       padding: 5px;
     }
+    position: relative;
+    margin-top: 1rem;
   }
   .content{
     display:flex;
@@ -112,5 +114,20 @@ export const Container = styled.div`
     width: 3rem;
     text-align: right;
     border-radius: 4px;
+  }
+  .options{
+    position: absolute;
+    right: 0px;
+    top:-1rem;
+  }
+  .options button{
+    margin-right:3px;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 0px;
+    background: ${props => props.theme.colors.background.secondary}
+  }
+  .options button:hover{
+    filter: brightness(0.9);
   }
 `;
