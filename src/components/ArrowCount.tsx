@@ -21,7 +21,7 @@ export default function initialArrowCount ({initialData}) {
         if(count > inputValue){
             setCount(Number(inputValue));
         }
-        changeEditMode();
+        setEditMode(!editMode);
     }
     function handleChange(event) {
         setInputValue(event.target.value);
@@ -36,9 +36,6 @@ export default function initialArrowCount ({initialData}) {
         setCount(basevalue.count);
         setMaxSize(basevalue.maxSize);
     }
-    function changeEditMode(){
-        setEditMode(!editMode);
-    }
     return(
         <Container>
             <div className="header">
@@ -47,16 +44,14 @@ export default function initialArrowCount ({initialData}) {
                     <button onClick={reset}>
                         <FiRefreshCcw size={18}/>
                     </button>
-                    <button onClick={changeEditMode}>
+                    <button onClick={()=> setEditMode(!editMode)}>
                         <FiEdit3 size={18}/>
                     </button>
                 </div>
             </div>
             {!editMode ? 
-            <>
                 <div className="content">
                     <p>{count}/{maxSize}</p>
-                </div>
                 <Buttons>
                     <button 
                         type="button" 
@@ -69,7 +64,7 @@ export default function initialArrowCount ({initialData}) {
                         Add
                     </button>
                 </Buttons>
-                </>
+                </div>
             : 
                 <div className="edit">
                     <label htmlFor="inputMaxValue">Valor Máximo</label>
