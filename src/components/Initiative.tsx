@@ -33,9 +33,9 @@ export default function Initiative({initialData}){
         setParticipants([...state]);
         resetInputAddParticipant();
     }
-    function handleChange(index,value,prop){
+    function handleChange(index,e){
         let state = participants
-        state[index][prop] = value;
+        state[index][e.target.name] = e.target.type === "checkbox" ? e.target.checked : e.target.value 
         setParticipants([...state])
     }
     useEffect(() => {
@@ -105,13 +105,11 @@ export default function Initiative({initialData}){
                             return(
                                 <tr className="inputs" key={participant.name}>
                                     <td>{participant.name}</td>
-                                    
-                                    <td><input type="text" value={participant.initiative} onChange={()=>handleChange(index,participant.initiative,'initiative')}/></td>
-                                    {console.log(participants.some((p) =>p.name !== participant.name && p.initiative === participant.initiative))}
+                                    <td><input type="text" name="initiative" value={participant.initiative} onChange={(e)=>handleChange(index,e)}/></td>
                                     {participants.some((p) => participant.initiative && p.name !== participant.name && p.initiative === participant.initiative) ? 
-                                        <td><input type="text" value={participant.priority} onChange={()=>handleChange(index,participant.priority,'priority')}/></td>
+                                        <td><input type="text" name="priority" value={participant.priority} onChange={(e)=>handleChange(index,e)}/></td>
                                     : <td></td>}
-                                    <td><input type="checkbox" checked={participant.isEnemy} onChange={()=>handleChange(index,participant.isEnemy,'isEnemy')}/></td>
+                                    <td><input type="checkbox" name="isEnemy" checked={participant.isEnemy} onChange={(e)=>handleChange(index,e)}/></td>
                                 </tr>
                             )
                         })}
