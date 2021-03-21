@@ -52,10 +52,13 @@ export const Card = styled.div`
         background: #45ff45;
         /* color: #45ff45; */
     }
-    .dead{
-        filter: brightness(0.6);
+    &.dead{
+        filter: brightness(0.5);
+        background: #ffff00;
     }
-    
+    p{
+        display: inline-block;
+    }
 
     
 `;

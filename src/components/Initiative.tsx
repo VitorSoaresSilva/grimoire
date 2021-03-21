@@ -1,14 +1,26 @@
 import { Container, Card } from "@/styles/components/Initiative";
 import { CardHeader } from "@/styles/components/Utils";
 import { useEffect, useState } from "react";
-import { FiCircle, FiEdit3, FiPlus, FiRefreshCcw, FiUser } from "react-icons/fi";
+import { FiArrowRight, FiCircle, FiEdit3, FiPlus, FiEdit2, FiRefreshCcw, FiUser, FiUserX } from "react-icons/fi";
 import Cookies from 'js-cookie';
 
+interface IParticipant{
+    name: string;
+    isEnemy: boolean;
+    isAlive: boolean;
+    priority:number;
+    initiative: number;
+}
+interface ITurn{
+    players: number;
+    enemys: number;
+    curIndex: number;
+}
+
 export default function Initiative({initialData}){
-    const baseValue = {
-        participants: [],
-    }
-    const [participants,setParticipants] = useState(initialData ? JSON.parse(initialData): baseValue.participants)
+    const baseValue = {participants: [],turn: {curIndex: -1, enemys: 0, players: 0} as ITurn};
+    const [participants,setParticipants] = useState<IParticipant[]>(initialData ? JSON.parse(initialData).participants: baseValue.participants)
+    const [turn, setTurn] = useState<ITurn>(initialData ? JSON.parse(initialData).turn: baseValue.turn)
     const [editMode, setEditMode] = useState(false);
     const [nameInput, setNameInput] = useState("");
     const [isEnemyInput, setIsEnemyInput] = useState(false);
@@ -23,10 +35,11 @@ export default function Initiative({initialData}){
         ((a.priority < b.priority) ? 1 : -1): -1)
         setParticipants([...state]); 
     }
-    function addParticipant(e){
+    function addParticipant(){
         let state = participants;
-        if(state.some(p => p.name == nameInput)){
-            alert("Participante já existe")
+        if(state.some(p => p.name == nameInput) || nameInput.length < 1){
+            alert("Participante invalido")
+            resetInputAddParticipant();
             return;
         }
         state.push({name: nameInput, isEnemy: isEnemyInput,priority:0,isAlive: true,initiative: 0})
@@ -39,8 +52,8 @@ export default function Initiative({initialData}){
         setParticipants([...state])
     }
     useEffect(() => {
-        Cookies.set('initiativeData', JSON.stringify(participants))
-    },[participants]);
+        Cookies.set('initiativeData', JSON.stringify({participants: participants, turn: turn}))
+    },[participants,turn]);
 
     function resetAll(){
         setParticipants(baseValue.participants);
@@ -60,6 +73,55 @@ export default function Initiative({initialData}){
         setEditMode(true);
         orderByName();
     }
+    function removeEnemys(){
+        let state = participants;
+        state = state.filter(e => !e.isEnemy)
+        setParticipants([...state])
+    }
+    async function startTurn(){
+        await orderByInitiative();
+        await setEditMode(false);
+        let state = participants;
+        if(state.length < 2){
+            alert('Adicione mais participantes');
+            return;
+        }
+        let playerCount = 0, enemyCount = 0;
+        for (let i = 0; i < state.length; i++) {
+            state[i].isAlive = true;
+            playerCount += Number(!state[i].isEnemy)
+            enemyCount += Number(state[i].isEnemy)
+        }
+        let newTurn = baseValue.turn;
+        newTurn.enemys = enemyCount;
+        newTurn.players = playerCount;
+        newTurn.curIndex = 0;
+        setTurn({...newTurn});
+        setParticipants([...state])
+    }
+    function nextOnTurn(){
+        let newTurn = turn;
+        for (let i = 0; i < participants.length; i++){
+            let nextIndex = (newTurn.curIndex + 1 + i) % participants.length;
+            if(participants[nextIndex].isAlive){
+                turn.curIndex = nextIndex;
+                setTurn({...newTurn});
+                return;
+            }
+        }
+        alert('Ninguem vivo');
+        return;
+    }
+    function setAsDead(index){
+        let state = participants
+        state[index].isAlive = false;
+        setParticipants([...state])
+    }
+    function endTurn(){
+        resetIniciative();
+        removeEnemys();
+        setTurn(baseValue.turn);
+    }
     /**
      * add participant
      *  - name, isEnemy
@@ -78,6 +140,10 @@ export default function Initiative({initialData}){
                 <button onClick={orderByName}>Order by Name</button>
                 <button onClick={orderByInitiative}>Order by initiative</button>
                 <button onClick={resetIniciative}>Reset initiative</button>
+                <button onClick={startTurn}>Start turn</button>
+                <button onClick={nextOnTurn}>next on turn</button>
+                <button onClick={endTurn}>end turn</button>
+                <button onClick={removeEnemys}>Remove enemys</button>
                 <div className="options">
                     <button onClick={resetAll}>
                         <FiRefreshCcw size={18}/>
@@ -118,10 +184,8 @@ export default function Initiative({initialData}){
 
 
                 <div className="add">
-                    <form onSubmit={(e)=>{e.preventDefault(); addParticipant(e)}}>
+                    <form onSubmit={(e)=>{e.preventDefault(); addParticipant()}}>
                         <input type="text" placeholder="Nome" value={nameInput} onChange={(e)=>setNameInput(e.target.value)}/>
-                        <label htmlFor="isEnemyInput">Inimigo?</label>
-                        <input type="checkbox" id="isEnemyInput" checked={isEnemyInput} onChange={(e)=>{setIsEnemyInput(e.target.checked)}}/>
                         <button type="submit"><FiPlus size={18}/></button>
                     </form>
                 </div>
@@ -129,11 +193,13 @@ export default function Initiative({initialData}){
             
 
             <div className="content">
-                {participants.map((participant)=>{
+                {participants.map((participant,index)=>{
                     return(
-                        <Card className={`card  ${!participant.isAlive && "dead"}`} key={participant.name}>
+                        <Card className={`${participant.isAlive ? "" : "dead"}`} key={participant.name}>
+                            {index === turn.curIndex && <span><FiArrowRight size={18}/></span>}
                             <span className={`time ${participant.isEnemy ? "enemy" : "player"}`}></span>
                             <p>{participant.name} - {participant.initiative}</p>
+                            <button type="button" onClick={()=>setAsDead(index)}><FiUserX size={18}/></button>
                         </Card>
                     )
                 })}
